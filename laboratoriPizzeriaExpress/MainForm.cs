@@ -14,6 +14,7 @@ namespace laboratoriPizzeriaCampusExpress
         // Colecciones principales: FIFO para pedidos, LIFO para bitácora
         private Queue<string> colaPedidos = new Queue<string>();
         private Stack<string> pilaBitacora = new Stack<string>();
+        private Queue<string> colaPremium = new Queue<string>();
 
         public MainForm()
         {
@@ -27,13 +28,16 @@ namespace laboratoriPizzeriaCampusExpress
             string cliente = txtCliente.Text.Trim();
 
             // Validar entrada
-            
+            if(cliente==""){
+            	lblEstado.Text=string.Format("Espacio vacio", cliente);
+            	return;
+            }
 
             // Agregar a la cola
-            
+            colaPedidos.Enqueue(cliente);
 
             // Registrar en la pila
-            
+            pilaBitacora.Push(string.Format("Pedido: {0}", cliente));
 
             // Limpiar campo y actualizar
             txtCliente.Clear();
@@ -70,9 +74,9 @@ namespace laboratoriPizzeriaCampusExpress
             if (ultimaAccion.StartsWith("PEDIDO:"))
             {
                 // Extraer nombre del cliente
-                
+               string nombre = (string)pilaBitacora.Pop();
                 // Reconstruir cola excluyendo ese pedido
-               
+                colaPedidos.Dequeue();
                 colaPedidos.Clear();
                 foreach (string p in temporal)
                 {
